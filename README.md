@@ -2,7 +2,7 @@
 
 A real-time process control prototype that links aqueous geochemical modeling (**PHREEQC**) with industrial telemetry (IIOT) (**MQTT** and **Node-RED**) to optimize sulfuric acid dosing on an 80% recovery Reverse Osmosis (RO) skid.
 
-## Why Was This Built This
+## Why Was This Built
 In industrial water reuse and Zero Liquid Discharge (ZLD) plants, RO membranes frequently fail from mineral scaling (primarily calcium carbonate and gypsum) when feedwater hardness fluctuates. Because operators rarely have real-time visibility into brine saturation inside the pressure vessels, most plants dose sulfuric acid at a fixed worst-case rate 24/7. That approach wastes chemicals, lowers permeate pH, and risks pipe corrosion.
 
 I built this project to test a feedforward control loop that calculates the exact minimum acid dose needed for incoming water quality in real time.
