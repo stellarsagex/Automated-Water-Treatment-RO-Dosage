@@ -1,0 +1,460 @@
+[
+    {
+        "id": "mqtt_in_ro",
+        "type": "mqtt in",
+        "z": "61d038a372ba5cc9",
+        "name": "RO1 Live Telemetry",
+        "topic": "saksham/waterplant/ro1/telemetry",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "mosquitto_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 250,
+        "y": 340,
+        "wires": [
+            [
+                "fn_ca",
+                "fn_si",
+                "fn_acid",
+                "fn_status",
+                "6884b685cad7d0bd",
+                "576973f27c2a5a09"
+            ]
+        ]
+    },
+    {
+        "id": "fn_ca",
+        "type": "function",
+        "z": "61d038a372ba5cc9",
+        "name": "Extract Feed Ca",
+        "func": "msg.payload = msg.payload.feed_Ca_mgL;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 260,
+        "wires": [
+            [
+                "gauge_ca"
+            ]
+        ]
+    },
+    {
+        "id": "fn_si",
+        "type": "function",
+        "z": "61d038a372ba5cc9",
+        "name": "Extract Calcite SI",
+        "func": "msg.payload = msg.payload.brine_Calcite_SI;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 320,
+        "wires": [
+            [
+                "gauge_si"
+            ]
+        ]
+    },
+    {
+        "id": "fn_acid",
+        "type": "function",
+        "z": "61d038a372ba5cc9",
+        "name": "Extract Acid Dose",
+        "func": "msg.payload = msg.payload.acid_pump_setpoint_mgL;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 380,
+        "wires": [
+            [
+                "chart_acid"
+            ]
+        ]
+    },
+    {
+        "id": "fn_status",
+        "type": "function",
+        "z": "61d038a372ba5cc9",
+        "name": "Extract Status",
+        "func": "msg.payload = msg.payload.system_status;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 440,
+        "wires": [
+            [
+                "text_status"
+            ]
+        ]
+    },
+    {
+        "id": "gauge_ca",
+        "type": "ui-gauge",
+        "z": "61d038a372ba5cc9",
+        "name": "Feed Calcium",
+        "group": "ui_group_ro",
+        "order": 1,
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Feed Calcium (mg/L)",
+        "units": "mg/L",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "300",
+                "color": "#ffc800"
+            },
+            {
+                "from": "340",
+                "color": "#ea5353"
+            }
+        ],
+        "min": 0,
+        "max": 450,
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 760,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "gauge_si",
+        "type": "ui-gauge",
+        "z": "61d038a372ba5cc9",
+        "name": "Brine Calcite SI",
+        "group": "ui_group_ro",
+        "order": 2,
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Brine Calcite SI",
+        "units": "SI",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "-1",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "0.26",
+                "color": "#ea5353"
+            }
+        ],
+        "min": -1,
+        "max": 1,
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 760,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "chart_acid",
+        "type": "ui-chart",
+        "z": "61d038a372ba5cc9",
+        "group": "ui_group_ro",
+        "name": "Acid Dosing Pump",
+        "label": "H2SO4 Dosing Setpoint (mg/L)",
+        "order": 3,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "ymin": "0",
+        "ymax": "300",
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 3,
+        "showLegend": false,
+        "removeOlder": "5",
+        "removeOlderUnit": "60",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0094ce"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 4,
+        "className": "",
+        "x": 770,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "text_status",
+        "type": "ui-text",
+        "z": "61d038a372ba5cc9",
+        "group": "ui_group_ro",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "System Status",
+        "label": "Controller Alarm Status:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 760,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "6884b685cad7d0bd",
+        "type": "function",
+        "z": "61d038a372ba5cc9",
+        "name": "Extract Daily Savings",
+        "func": "msg.payload = \"$\" + msg.payload.daily_savings_usd.toFixed(2) + \" / day\";\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 540,
+        "wires": [
+            [
+                "fe0c73c8131ba818"
+            ]
+        ]
+    },
+    {
+        "id": "576973f27c2a5a09",
+        "type": "function",
+        "z": "61d038a372ba5cc9",
+        "name": "Extract Annual Savings",
+        "func": "msg.payload = \"$\" + msg.payload.annual_savings_usd.toLocaleString() + \" / year\";\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 620,
+        "wires": [
+            [
+                "5635bfb87d25a754"
+            ]
+        ]
+    },
+    {
+        "id": "fe0c73c8131ba818",
+        "type": "ui-text",
+        "z": "61d038a372ba5cc9",
+        "group": "ui_group_ro",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Real-Time Chemical Saving",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 780,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "5635bfb87d25a754",
+        "type": "ui-text",
+        "z": "61d038a372ba5cc9",
+        "group": "ui_group_ro",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Projected Annual ROI",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 780,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "mosquitto_broker",
+        "type": "mqtt-broker",
+        "name": "Public Mosquitto",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ui_group_ro",
+        "type": "ui-group",
+        "name": "RO Skid 1 - Autonomous Chemical Control",
+        "page": "ui_page_ro",
+        "width": "6",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "ui_page_ro",
+        "type": "ui-page",
+        "name": "Industrial RO Digital Twin",
+        "ui": "ui_base_ro",
+        "path": "/ro-twin",
+        "icon": "water",
+        "layout": "grid",
+        "theme": "ui_theme_ro",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "ui_base_ro",
+        "type": "ui-base",
+        "name": "Smart Water SCADA",
+        "path": "/dashboard",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "navigationStyle": "default",
+        "titleBarStyle": "default"
+    },
+    {
+        "id": "ui_theme_ro",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px",
+            "density": "default"
+        }
+    },
+    {
+        "id": "a6ebd3340a249afe",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.37.0"
+        }
+    }
+]
